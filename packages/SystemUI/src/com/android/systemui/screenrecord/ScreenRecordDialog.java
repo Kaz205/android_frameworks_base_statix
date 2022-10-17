@@ -69,8 +69,6 @@ public class ScreenRecordDialog extends SystemUIDialog {
     private static final long INTERVAL_MS = 1000;
     private static final String PREFS = "screenrecord_";
     private static final String PREF_TAPS = "show_taps";
-    private static final String PREF_DOT = "show_dot";
-    private static final String PREF_LOW = "use_low_quality";
     private static final String PREF_AUDIO = "use_audio";
     private static final String PREF_AUDIO_SOURCE = "audio_source";
 
@@ -212,8 +210,6 @@ public class ScreenRecordDialog extends SystemUIDialog {
 
     private void savePrefs(Context userContext) {
         Prefs.putInt(userContext, PREFS + PREF_TAPS, mTapsSwitch.isChecked() ? 1 : 0);
-        Prefs.putInt(userContext, PREFS + PREF_DOT, mStopDotSwitch.isChecked() ? 1 : 0);
-        Prefs.putInt(userContext, PREFS + PREF_LOW, mLowQualitySwitch.isChecked() ? 1 : 0);
         Prefs.putInt(userContext, PREFS + PREF_AUDIO, mAudioSwitch.isChecked() ? 1 : 0);
         Prefs.putInt(userContext, PREFS + PREF_AUDIO_SOURCE, mOptions.getSelectedItemPosition());
     }
@@ -221,8 +217,6 @@ public class ScreenRecordDialog extends SystemUIDialog {
     private void loadPrefs() {
         Context userContext = mUserContextProvider.getUserContext();
         mTapsSwitch.setChecked(Prefs.getInt(userContext, PREFS + PREF_TAPS, 0) == 1);
-        mStopDotSwitch.setChecked(Prefs.getInt(userContext, PREFS + PREF_DOT, 0) == 1);
-        mLowQualitySwitch.setChecked(Prefs.getInt(userContext, PREFS + PREF_LOW, 0) == 1);
         mAudioSwitch.setChecked(Prefs.getInt(userContext, PREFS + PREF_AUDIO, 0) == 1);
         mOptions.setSelection(Prefs.getInt(userContext, PREFS + PREF_AUDIO_SOURCE, 0));
     }
