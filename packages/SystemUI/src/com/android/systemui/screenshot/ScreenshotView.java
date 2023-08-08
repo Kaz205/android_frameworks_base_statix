@@ -34,6 +34,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -726,7 +728,14 @@ public class ScreenshotView extends FrameLayout implements
             if (mQuickShareChip != null) {
                 mQuickShareChip.setIsPending(false);
             }
-            mPendingInteraction = PendingInteraction.DELETE;
+            new AlertDialog.Builder(mContext)
+                .setMessage(R.string.screenshot_delete_description)
+                .setNegativeButton(com.android.internal.R.string.cancel, null)
+                .setPositiveButton(com.android.internal.R.string.delete, (dialog, which) -> {
+                    mPendingInteraction = PendingInteraction.DELETE;
+                    animateDismissal();
+                })
+                .show();
         });
         chips.add(mDeleteChip);
 
@@ -840,10 +849,6 @@ public class ScreenshotView extends FrameLayout implements
             } else {
                 startSharedTransition(imageData.editTransition.get());
             }
-        });
-        mDeleteChip.setPendingIntent(imageData.deleteAction.actionIntent, () -> {
-            mUiEventLogger.log(ScreenshotEvent.SCREENSHOT_DELETE_TAPPED);
-            animateDismissal();
         });
         mScreenshotPreview.setOnClickListener(v -> {
             mUiEventLogger.log(ScreenshotEvent.SCREENSHOT_PREVIEW_TAPPED, 0, mPackageName);
