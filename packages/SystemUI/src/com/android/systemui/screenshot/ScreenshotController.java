@@ -444,6 +444,10 @@ public class ScreenshotController {
             RequestCallback requestCallback) {
         Assert.isMainThread();
         mCurrentRequestCallback = requestCallback;
+        dismissScreenshot(SCREENSHOT_DISMISSED_NOANIMATION);
+        /* Wait 50ms to make sure we are on new frame. */
+        Thread.sleep(50);
+
         if (screenshot.getType() == WindowManager.TAKE_SCREENSHOT_FULLSCREEN) {
             Rect bounds = getFullScreenRect();
             screenshot.setBitmap(
@@ -576,6 +580,9 @@ public class ScreenshotController {
             RequestCallback requestCallback) {
         Assert.isMainThread();
         mCurrentRequestCallback = requestCallback;
+        dismissScreenshot(SCREENSHOT_DISMISSED_NOANIMATION);
+        /* Wait 50ms to make sure we are on new frame. */
+        Thread.sleep(50);
         takeScreenshotInternal(topComponent, finisher, getFullScreenRect());
     }
 
@@ -620,7 +627,9 @@ public class ScreenshotController {
         }
         mUiEventLogger.log(event, 0, mPackageName);
         mScreenshotHandler.cancelTimeout();
-        mScreenshotView.animateDismissal();
+        if (event == SCREENSHOT_DISMISSED_NOANIMATION) {
+            mScreenshotView.animateDismissal();
+        }
     }
 
     boolean isPendingSharedTransition() {

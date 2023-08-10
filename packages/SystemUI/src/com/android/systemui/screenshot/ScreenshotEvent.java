@@ -66,6 +66,8 @@ public enum ScreenshotEvent implements UiEventLogger.UiEventEnum {
     SCREENSHOT_EXPLICIT_DISMISSAL(311),
     @UiEvent(doc = "screenshot swiped to dismiss")
     SCREENSHOT_SWIPE_DISMISSED(656),
+    @UiEvent(doc = "screenshot dismissed, don't animate")
+    SCREENSHOT_DISMISSED_NOANIMATION(856),
     @UiEvent(doc = "screenshot dismissed, miscellaneous reason")
     SCREENSHOT_DISMISSED_OTHER(1076),
     @UiEvent(doc = "screenshot reentered for new screenshot")
