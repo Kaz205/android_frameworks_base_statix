@@ -48,6 +48,7 @@ public class PropImitationHooks {
     private static final String PACKAGE_GMS = "com.google.android.gms";
     private static final String PROCESS_GMS_UNSTABLE = PACKAGE_GMS + ".unstable";
     private static final String PACKAGE_GPHOTOS = "com.google.android.apps.photos";
+    private static final String FEATURE_NEXUS_PRELOAD = "com.google.android.apps.photos.NEXUS_PRELOAD";
 
     private static final String PACKAGE_SETUPWIZARD = "com.google.android.setupwizard";
     private static final String PACKAGE_SUBSCRIPTION_RED = "com.google.android.apps.subscriptions.red";
@@ -55,6 +56,16 @@ public class PropImitationHooks {
 
     private static final ComponentName GMS_ADD_ACCOUNT_ACTIVITY = ComponentName.unflattenFromString(
             "com.google.android.gms/.auth.uiflows.minutemaid.MinuteMaidActivity");
+
+    private static final Map<String, String> sPixelOneProps = Map.of(
+            "PRODUCT", "marlin",
+            "DEVICE", "marlin",
+            "MANUFACTURER", "Google",
+            "BRAND", "google",
+            "MODEL", "Pixel  XL",
+            "ID", "QP1A.191005.007.A3",
+            "FINGERPRINT", "google/marlin/marlin:10/QP1A.191005.007.A3/5972272:user/release-keys"
+    );
 
     private static final Map<String, String> sPixelNineProps = Map.of(
             "PRODUCT", "komodo_beta",
@@ -164,6 +175,10 @@ public class PropImitationHooks {
                     setPropValue("FINGERPRINT", sStockFp);;
                 }
                 return;
+	    case PACKAGE_GPHOTOS:
+		dlog("Spoofing Pixel XL for Google Photos");
+		setProps(sPixelOneProps);
+		return;
         }
     }
 
@@ -277,6 +292,10 @@ public class PropImitationHooks {
             dlog("Blocked system feature " + name + " for Google Photos");
             has = false;
         }
+	if (sIsPhotos && !has && name.equalsIgnoreCase(FEATURE_NEXUS_PRELOAD)) {
+		dlog("Enabled system feature " + name + " for Google Photos");
+		has = true;
+	}
         return has;
     }
 
